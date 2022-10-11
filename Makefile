@@ -1,17 +1,34 @@
-OBJ = $(SRC:.c=.o)
+SRC	=	main.c	\
+		src/path.c	\
+		src/env.c	\
+		src/my_strcmp.c	\
+		src/builtin.c	\
+		src/my_strcpy.c	\
+		src/handling.c	\
+		src/my_strlen.c	\
+		src/separators.c	\
+		src/concat_str.c	\
+		src/my_str_to_word_array.c	\
 
-CFLAGS += -I./include
-CFLAGS += -W -Werror -Wextra -Wall
+CFLAGS	=	-Wall -Wextra -g
 
-LIBS += -lSDL2 -lSDL2_image -lSDL2 -lSDL2_ttf
+CPPFLAGS	=	-I includes
 
-all: $(NAME)
+OBJ	=	$(SRC:.c=.o)
 
-$(NAME): $(OBJ)
-$(CC) $(OBJ) $(LIBS) -o $(NAME)
+NAME	=	mysh
+
+all:	$(NAME)
+
+$(NAME):	$(OBJ)
+	gcc -o $(NAME) $(OBJ)
 
 clean:
-  rm -f $(OBJ)
+	rm -f	$(OBJ)
 
-fclean: clean
-  rm -f $(NAME)
+fclean:	clean
+	rm	-f	$(NAME)
+
+re:	fclean all
+
+.PHONY = all clean fclean re
