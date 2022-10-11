@@ -1,27 +1,17 @@
 SRC	=	main.c	\
-		src/path.c	\
-		src/env.c	\
-		src/my_strcmp.c	\
-		src/builtin.c	\
-		src/my_strcpy.c	\
-		src/handling.c	\
-		src/my_strlen.c	\
-		src/separators.c	\
-		src/concat_str.c	\
-		src/my_str_to_word_array.c	\
 
-CFLAGS	=	-Wall -Wextra -g
+CFLAGS	=	-Wall -Wextra -Werror
 
 CPPFLAGS	=	-I includes
 
 OBJ	=	$(SRC:.c=.o)
 
-NAME	=	mysh
+NAME	=	bomberman
 
 all:	$(NAME)
 
 $(NAME):	$(OBJ)
-	gcc -o $(NAME) $(OBJ)
+	gcc -o $(NAME) $(OBJ) -lSDL2main -lSDL2
 
 clean:
 	rm -f	$(OBJ)
@@ -30,5 +20,3 @@ fclean:	clean
 	rm	-f	$(NAME)
 
 re:	fclean all
-
-.PHONY = all clean fclean re
