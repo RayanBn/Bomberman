@@ -1,12 +1,21 @@
 #include "bomberman.h"
 
-int eventLoop(void)
+int eventLoop(SDL_Rect *playerPos)
 {
     SDL_Event event;
+    int speed = 5;
 
-    if (SDL_PollEvent(&event)) {
+    while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT)
             return LEAVE;
+        if (event.key.keysym.sym == SDLK_LEFT)
+            playerPos->x -= speed;
+        if (event.key.keysym.sym == SDLK_RIGHT)
+            playerPos->x += speed;
+        if (event.key.keysym.sym == SDLK_UP)
+            playerPos->y -= speed;
+        if (event.key.keysym.sym == SDLK_DOWN)
+            playerPos->y += speed;
     }
     return GAME;
 }
@@ -74,24 +83,6 @@ SDL_Rect **createMap(void)
     return textureMap;
 }
 
-SDL_Rect playerMovement(SDL_Rect playerPos)
-{
-    SDL_Event event;
-    int speed = 10;
-
-    if (SDL_PollEvent(&event)) {
-        if (event.key.keysym.sym == SDLK_LEFT)
-            playerPos.x -= speed;
-        if (event.key.keysym.sym == SDLK_RIGHT)
-            playerPos.x += speed;
-        if (event.key.keysym.sym == SDLK_UP)
-            playerPos.y -= speed;
-        if (event.key.keysym.sym == SDLK_DOWN)
-            playerPos.y += speed;
-    }
-    return playerPos;
-}
-
 int main(void)
 {
     SDL_Window *window = NULL;
@@ -109,9 +100,8 @@ int main(void)
     mapTileset = SDL_LoadBMP("./assets/bomber.bmp");
     texture = SDL_CreateTextureFromSurface(renderer, mapTileset);
     while (status != LEAVE) {
-        status = eventLoop();
+        status = eventLoop(&playerPos);
         renderMap(renderer, texture, mapRects, textMap);
-        playerPos = playerMovement(playerPos);
         SDL_RenderCopy(renderer, texture, &playerRect, &playerPos);
         SDL_RenderPresent(renderer);
     }
